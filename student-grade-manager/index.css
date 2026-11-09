@@ -1,0 +1,283 @@
+@import url("https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap");
+
+/* ============ Tokens ============ */
+:root {
+    --page: #e9eef7;
+    --surface: #ffffff;
+    --ink: #13203d;
+    --ink-soft: #55627f;
+    --line: #d6deec;
+    --brand: #2457d6;
+    --brand-dark: #1a42a8;
+    --brand-tint: #e6edfd;
+
+    /* grade colours: text / tint background / solid */
+    --a: #166534; --a-bg: #dcfce7; --a-solid: #16a34a;
+    --b: #0f5e63; --b-bg: #d5f3f1; --b-solid: #0d9488;
+    --c: #854d0e; --c-bg: #fef3c7; --c-solid: #d97706;
+    --d: #9a3412; --d-bg: #ffe6d5; --d-solid: #ea580c;
+    --f: #991b1b; --f-bg: #fee2e2; --f-solid: #dc2626;
+
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(19, 32, 61, .06), 0 8px 24px rgba(19, 32, 61, .07);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --page: #0c1324;
+        --surface: #141d34;
+        --ink: #e8edfa;
+        --ink-soft: #9aa7c4;
+        --line: #26324f;
+        --brand: #6c93ff;
+        --brand-dark: #8aa9ff;
+        --brand-tint: #1b2a52;
+        --a: #86efac; --a-bg: #12341f;
+        --b: #7ee3da; --b-bg: #0e3436;
+        --c: #fcd34d; --c-bg: #3a2e0c;
+        --d: #fdba74; --d-bg: #3d2010;
+        --f: #fca5a5; --f-bg: #3f1616;
+        --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
+    }
+}
+
+/* ============ Base ============ */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    margin: 0 auto;
+    max-width: 980px;
+    padding: 40px 20px 64px;
+    font-family: "Figtree", "Segoe UI", system-ui, sans-serif;
+    color: var(--ink);
+    background:
+        radial-gradient(900px 340px at 10% -10%, var(--brand-tint), transparent 70%),
+        var(--page);
+    min-height: 100vh;
+    line-height: 1.5;
+
+    /* inputs sit in a 2-column form grid; everything else spans both columns */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 16px;
+    align-content: start;
+}
+
+h1 {
+    grid-column: 1 / -1;
+    margin: 0 0 10px;
+    font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -.03em;
+    line-height: 1.1;
+}
+
+h1::after {
+    content: "";
+    display: block;
+    width: 72px;
+    height: 5px;
+    margin-top: 14px;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--a-solid), var(--b-solid), var(--c-solid), var(--d-solid), var(--f-solid));
+}
+
+/* ============ Inputs ============ */
+input {
+    width: 100%;
+    padding: 14px 16px;
+    font: inherit;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: border-color .15s, box-shadow .15s, transform .15s;
+}
+
+input::placeholder { color: var(--ink-soft); font-weight: 400; }
+
+input:hover { border-color: var(--brand); }
+
+input:focus {
+    outline: none;
+    border-color: var(--brand);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 25%, transparent);
+    transform: translateY(-1px);
+}
+
+/* ============ Buttons + GPA ============ */
+.buttons-div {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+button {
+    font: inherit;
+    font-weight: 700;
+    padding: 13px 22px;
+    border: 0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform .12s, box-shadow .15s, background-color .15s;
+}
+
+button:active { transform: translateY(1px) scale(.98); }
+button:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+
+.add-btn {
+    color: #fff;
+    background: var(--brand-dark);
+    box-shadow: 0 6px 16px color-mix(in srgb, var(--brand) 40%, transparent);
+}
+.add-btn:hover { background: var(--brand); transform: translateY(-2px); }
+
+.gpa-calculator {
+    color: #fff;
+    background: var(--a-solid);
+    box-shadow: 0 6px 16px color-mix(in srgb, var(--a-solid) 40%, transparent);
+}
+.gpa-calculator:hover { filter: brightness(1.08); transform: translateY(-2px); }
+
+.remove-all {
+    color: var(--f);
+    background: var(--f-bg);
+    border: 1.5px solid color-mix(in srgb, var(--f-solid) 45%, transparent);
+}
+.remove-all:hover { background: var(--f-solid); color: #fff; }
+
+/* GPA result: colour follows the band (add one of the classes in JS, see notes) */
+.display-gpa {
+    margin: 0 0 0 auto;
+    padding: 10px 22px;
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -.01em;
+    border-radius: 99px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 2px solid var(--line);
+    box-shadow: var(--shadow);
+}
+.display-gpa:empty { display: none; }
+
+.display-gpa.gpa-first,    .display-gpa[data-band="first"]    { color: var(--a); background: var(--a-bg); border-color: var(--a-solid); }
+.display-gpa.gpa-second-upper, .display-gpa[data-band="second-upper"] { color: var(--b); background: var(--b-bg); border-color: var(--b-solid); }
+.display-gpa.gpa-second-lower, .display-gpa[data-band="second-lower"] { color: var(--c); background: var(--c-bg); border-color: var(--c-solid); }
+.display-gpa.gpa-third,    .display-gpa[data-band="third"]    { color: var(--d); background: var(--d-bg); border-color: var(--d-solid); }
+.display-gpa.gpa-pass,     .display-gpa[data-band="pass"]     { color: var(--f); background: var(--f-bg); border-color: var(--f-solid); }
+
+/* ============ Course table ============
+   Your JS outputs 5 flat cells per course (code, title, unit, grade, delete button),
+   so .display-course is one grid with 5 columns and the header uses the same columns. */
+.all-display-div {
+    grid-column: 1 / -1;
+    margin-top: 10px;
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.display-head-div,
+.display-course {
+    display: grid;
+    grid-template-columns: 1.1fr 2.6fr .8fr 1fr 124px;
+    padding: 0 20px;
+}
+
+.display-head-div {
+    background: var(--brand-tint);
+    border-bottom: 1.5px solid var(--line);
+}
+
+.display-head-div > div {
+    padding: 14px 12px 14px 0;
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+}
+
+.display-course:empty::before {
+    content: "No courses yet. Fill in the fields above and press Add course.";
+    grid-column: 1 / -1;
+    padding: 36px 0;
+    text-align: center;
+    color: var(--ink-soft);
+}
+
+/* every cell of a course row */
+.display-course > * {
+    display: flex;
+    align-items: center;
+    padding: 14px 12px 14px 0;
+    border-bottom: 1px solid var(--line);
+    font-weight: 500;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+/* remove the last row's line (the 5 cells of the final course) */
+.display-course > :nth-last-child(-n+5) { border-bottom: 0; }
+
+.display-course > :nth-child(5n+1) { font-weight: 700; }                    /* code  */
+.display-course > :nth-child(5n+3) { font-variant-numeric: tabular-nums; }  /* unit  */
+.display-course > :nth-child(5n)   { justify-content: flex-end; padding-right: 0; } /* delete */
+
+/* ---- grade badge ----
+   In your JS, wrap the grade like this:
+   <div><span class="grade-badge" data-grade="${grade.toUpperCase()}">${grade}</span></div> */
+.grade-badge {
+    min-width: 44px;
+    padding: 3px 14px;
+    text-align: center;
+    font-weight: 800;
+    border-radius: 99px;
+    color: var(--ink);
+    background: var(--line);
+}
+.grade-badge[data-grade="A"] { color: var(--a); background: var(--a-bg); box-shadow: inset 0 0 0 1.5px var(--a-solid); }
+.grade-badge[data-grade="B"] { color: var(--b); background: var(--b-bg); box-shadow: inset 0 0 0 1.5px var(--b-solid); }
+.grade-badge[data-grade="C"] { color: var(--c); background: var(--c-bg); box-shadow: inset 0 0 0 1.5px var(--c-solid); }
+.grade-badge[data-grade="D"] { color: var(--d); background: var(--d-bg); box-shadow: inset 0 0 0 1.5px var(--d-solid); }
+.grade-badge[data-grade="E"],
+.grade-badge[data-grade="F"] { color: var(--f); background: var(--f-bg); box-shadow: inset 0 0 0 1.5px var(--f-solid); }
+
+/* ---- delete button ---- */
+.remove-btn {
+    padding: 7px 14px;
+    font-size: .85rem;
+    color: var(--f);
+    background: var(--f-bg);
+    border: 1.5px solid color-mix(in srgb, var(--f-solid) 40%, transparent);
+    border-radius: 10px;
+}
+.remove-btn:hover { background: var(--f-solid); color: #fff; transform: none; }
+
+/* ============ Responsive ============ */
+@media (max-width: 640px) {
+    body { grid-template-columns: 1fr; padding: 28px 14px 48px; }
+
+    .buttons-div button { flex: 1 1 100%; }
+    .display-gpa { margin: 0; width: 100%; text-align: center; }
+
+    .display-head-div,
+    .display-course {
+        grid-template-columns: .9fr 1.6fr .6fr .9fr 74px;
+        padding: 0 12px;
+    }
+    .display-head-div > div,
+    .display-course > * { padding: 12px 8px 12px 0; font-size: .82rem; }
+    .grade-badge { min-width: 0; padding: 2px 10px; }
+    .remove-btn { padding: 6px 8px; font-size: .75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+}
